@@ -6,6 +6,7 @@ const mongodb = require("mongodb");
 const jwt = require("jsonwebtoken");
 const req = require("express/lib/request");
 const res = require("express/lib/response");
+const { query } = require("express");
 require("dotenv").config();
 // app
 const app = express();
@@ -73,17 +74,13 @@ const run = async () => {
     app.get("/manage-inventory/", async (req, res) => {
       const id = req.query._id;
       const qurey = { _id: mongodb.ObjectId(id) };
+      if (!query) {
+        res.status(404).send({ message: "No data found for the request" });
+      }
       const cursor = inventoryCoolection.find(qurey);
 
-      const inventoryItems = await cursor.toArray();
-      res.status(200).send(inventoryItems);
-    });
-    app.get("/inventory/", async (req, res) => {
-      const id = req.query._id;
-      const qurey = { _id: mongodb.ObjectId(id) };
-      const result = await inventoryCoolection.findOne(qurey);
-      if (result > 0) {
-        const inventoryItems = await result.toArray();
+      if (cursor > 0) {
+        const inventoryItems = await cursor.toArray();
         res.status(200).send(inventoryItems);
       } else {
         res.status(404).send({ message: "No data found for the request" });
