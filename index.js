@@ -73,20 +73,15 @@ const run = async () => {
     app.get("/manage-inventory/", async (req, res) => {
       const id = req.query._id;
       const qurey = { _id: mongodb.ObjectId(id) };
-      if (qurey) {
-      } else {
-        const cursor = inventoryCoolection.find(qurey);
+      const cursor = inventoryCoolection.find(qurey);
 
-        const inventoryItems = await cursor.toArray();
-        res.status(200).send(inventoryItems);
-      }
+      const inventoryItems = await cursor.toArray();
+      res.status(200).send(inventoryItems);
     });
     app.get("/inventory/", async (req, res) => {
       const id = req.query._id;
-      // const qurey = { _id: mongodb.ObjectId(id) };
-      const result = await inventoryCoolection.findOne({
-        _id: mongodb.ObjectId(id),
-      });
+      const qurey = { _id: mongodb.ObjectId(id) };
+      const result = await inventoryCoolection.findOne(qurey);
       if (result > 0) {
         const inventoryItems = await result.toArray();
         res.status(200).send(inventoryItems);
