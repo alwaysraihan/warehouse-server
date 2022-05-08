@@ -97,7 +97,7 @@ const run = async () => {
 
         res.send(myItems);
       } else {
-        return res.status(403).send({ message: "Forbiden User" });
+        res.status(403).send({ message: "Forbiden User" });
       }
     });
 
