@@ -76,12 +76,12 @@ const run = async () => {
       const cursor = inventoryCoolection.find(qurey);
 
       const inventoryItems = await cursor.toArray();
-      if (inventoryItems) {
-        res.send(inventoryItems);
-      } else {
+      if (inventoryItems.length === 0) {
         return res
           .status(404)
           .send({ message: "No data found for the request" });
+      } else {
+        res.status(200).send(inventoryItems);
       }
     });
 
