@@ -137,8 +137,6 @@ const run = async () => {
     app.get("/", async (req, res) => {
       res.send("Warehouse managment server");
     });
-  } catch {
-    return res.status(403).send({ message: "Forbiden User" });
   } finally {
   }
 };
