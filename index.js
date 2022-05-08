@@ -73,9 +73,12 @@ const run = async () => {
       const id = req.query._id;
       const qurey = { _id: mongodb.ObjectId(id) };
       const cursor = inventoryCoolection.find(qurey);
-      const inventoryItems = await cursor.toArray();
-
-      res.send(inventoryItems);
+      if (cursor) {
+        const inventoryItems = await cursor.toArray();
+        res.send(inventoryItems);
+      } else {
+        res.status(204).send({ message: "No data found for this request" });
+      }
     });
 
     // user items get api
@@ -127,12 +130,9 @@ const run = async () => {
     app.delete("/inventory-items/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: mongodb.ObjectId(id) };
-      if (query) {
-        const result = await inventoryCoolection.deleteOne(query);
-        res.send(result);
-      } else {
-        res.send({ message: "No data found" });
-      }
+
+      const result = await inventoryCoolection.deleteOne(query);
+      res.send(result);
     });
 
     app.get("/", async (req, res) => {
