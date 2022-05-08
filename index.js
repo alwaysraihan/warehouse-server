@@ -75,12 +75,12 @@ const run = async () => {
       const qurey = { _id: mongodb.ObjectId(id) };
       const cursor = inventoryCoolection.find(qurey);
 
-      const inventoryItems = await cursor.toArray();
-      if (inventoryItems.length === 0) {
+      if (qurey.length === 0) {
         return res
           .status(404)
           .send({ message: "No data found for the request" });
       } else {
+        const inventoryItems = await cursor.toArray();
         res.status(200).send(inventoryItems);
       }
     });
@@ -148,4 +148,4 @@ const run = async () => {
 run().catch(console.dir);
 
 const port = process.env.PORT || 5000;
-app.listen(port, () => console.log(" Hello I am Listening on port:", port));
+app.listen(port, () => console.log("I am Listening on port:", port));
