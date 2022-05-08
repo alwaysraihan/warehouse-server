@@ -73,18 +73,14 @@ const run = async () => {
     app.get("/manage-inventory/", async (req, res) => {
       const id = req.query._id;
       const qurey = { _id: mongodb.ObjectId(id) };
-      const cursor = inventoryCoolection.find(qurey,function(err,result){
-        if (err) {
-          return res
-            .status(404)
-            .send({ message: "No data found for the request" });
-        } if(result) {
-          const inventoryItems = await cursor.toArray();
-          res.status(200).send(inventoryItems);
-        }
-      });
+      if (qurey) {
+        const cursor = inventoryCoolection.find(qurey);
 
-     
+        const inventoryItems = await cursor.toArray();
+        res.status(200).send(inventoryItems);
+      } else {
+        res.status(404).send({ message: "No Data Found For The Request" });
+      }
     });
 
     // user items get api
