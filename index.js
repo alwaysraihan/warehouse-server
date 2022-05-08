@@ -74,12 +74,24 @@ const run = async () => {
       const id = req.query._id;
       const qurey = { _id: mongodb.ObjectId(id) };
       if (qurey) {
+      } else {
         const cursor = inventoryCoolection.find(qurey);
 
         const inventoryItems = await cursor.toArray();
         res.status(200).send(inventoryItems);
+      }
+    });
+    app.get("/inventory/:id", async (req, res) => {
+      const id = req.query._id;
+      // const qurey = { _id: mongodb.ObjectId(id) };
+      const result = await inventoryCoolection.findOne({
+        _id: mongodb.ObjectId(id),
+      });
+      if (result) {
+        const inventoryItems = await result.toArray();
+        res.status(200).send(inventoryItems);
       } else {
-        res.status(404).send({ message: "No Data Found For The Request" });
+        res.status(404).send({ message: "No data found for the request" });
       }
     });
 
