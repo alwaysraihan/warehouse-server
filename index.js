@@ -81,13 +81,13 @@ const run = async () => {
         res.status(200).send(inventoryItems);
       }
     });
-    app.get("/inventory/:id", async (req, res) => {
+    app.get("/inventory/", async (req, res) => {
       const id = req.query._id;
       // const qurey = { _id: mongodb.ObjectId(id) };
       const result = await inventoryCoolection.findOne({
         _id: mongodb.ObjectId(id),
       });
-      if (result) {
+      if (result > 0) {
         const inventoryItems = await result.toArray();
         res.status(200).send(inventoryItems);
       } else {
