@@ -69,18 +69,19 @@ const run = async () => {
 
       res.send(inventoryItems);
     });
-    app.get("/manage-inventory/", async (req, res) => {
-      const id = req.query._id;
-      const qurey = { _id: mongodb.ObjectId(id) };
-      const cursor = inventoryCoolection.find(qurey);
-      if (cursor) {
-        const inventoryItems = await cursor.toArray();
-        res.send(inventoryItems);
-      } else {
-        res.status(204).send({ message: "No data found for this request" });
-      }
-    });
+    try {
+      app.get("/manage-inventory/", async (req, res) => {
+        const id = req.query._id;
+        const qurey = { _id: mongodb.ObjectId(id) };
+        const cursor = inventoryCoolection.find(qurey);
 
+        const inventoryItems = await cursor.toArray();
+
+        res.send(inventoryItems);
+      });
+    } catch {
+      return res.status(404).send({ message: "No data found for the request" });
+    }
     // user items get api
     app.get("/my-items", verifyUser, async (req, res) => {
       const decodedEmail = req.decoded.email;
@@ -144,4 +145,4 @@ const run = async () => {
 run().catch(console.dir);
 
 const port = process.env.PORT || 5000;
-app.listen(port, () => console.log(" Hello I amListening on port:", port));
+app.listen(port, () => console.log(" Hello I am Listening on port:", port));
