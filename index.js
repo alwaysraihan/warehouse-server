@@ -90,15 +90,10 @@ const run = async () => {
       const decodedEmail = req.decoded.email;
       const email = req.query.email;
       const qurey = { email: email };
+      const cursor = inventoryCoolection.find(qurey);
+      const myItems = await cursor.toArray();
 
-      if (email === decodedEmail) {
-        const cursor = inventoryCoolection.find(qurey);
-        const myItems = await cursor.toArray();
-
-        res.send(myItems);
-      } else {
-        res.status(403).send({ message: "Forbiden User" });
-      }
+      res.send(myItems);
     });
 
     // POST New Item
@@ -142,10 +137,14 @@ const run = async () => {
     app.get("/", async (req, res) => {
       res.send("Warehouse managment server");
     });
+  } catch {
+    return res.status(403).send({ message: "Forbiden User" });
   } finally {
   }
 };
 run().catch(console.dir);
 
 const port = process.env.PORT || 5000;
-app.listen(port, () => console.log("I am Listening on port:", port));
+app.listen(port, () =>
+  console.log("Hello there I am Listening on port:", port)
+);
