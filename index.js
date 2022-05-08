@@ -127,8 +127,12 @@ const run = async () => {
     app.delete("/inventory-items/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: mongodb.ObjectId(id) };
-      const result = await inventoryCoolection.deleteOne(query);
-      res.send(result);
+      if (query) {
+        const result = await inventoryCoolection.deleteOne(query);
+        res.send(result);
+      } else {
+        res.send({ message: "No data found" });
+      }
     });
 
     app.get("/", async (req, res) => {
