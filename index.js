@@ -74,9 +74,9 @@ const run = async () => {
       const id = req.query._id;
       const qurey = { _id: mongodb.ObjectId(id) };
       const cursor = inventoryCoolection.find(qurey);
-      if (cursor) {
-        const inventoryItems = await cursor.toArray();
 
+      const inventoryItems = await cursor.toArray();
+      if (inventoryItems.length > 0) {
         res.send(inventoryItems);
       } else {
         return res
