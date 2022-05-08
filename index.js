@@ -6,7 +6,6 @@ const mongodb = require("mongodb");
 const jwt = require("jsonwebtoken");
 const req = require("express/lib/request");
 const res = require("express/lib/response");
-const { query } = require("express");
 require("dotenv").config();
 // app
 const app = express();
@@ -70,21 +69,13 @@ const run = async () => {
 
       res.send(inventoryItems);
     });
-
     app.get("/manage-inventory/", async (req, res) => {
       const id = req.query._id;
       const qurey = { _id: mongodb.ObjectId(id) };
-      if (!query) {
-        res.status(404).send({ message: "No data found for the request" });
-      }
       const cursor = inventoryCoolection.find(qurey);
+      const inventoryItems = await cursor.toArray();
 
-      if (cursor > 0) {
-        const inventoryItems = await cursor.toArray();
-        res.status(200).send(inventoryItems);
-      } else {
-        res.status(404).send({ message: "No data found for the request" });
-      }
+      res.send(inventoryItems);
     });
 
     // user items get api
@@ -92,10 +83,15 @@ const run = async () => {
       const decodedEmail = req.decoded.email;
       const email = req.query.email;
       const qurey = { email: email };
-      const cursor = inventoryCoolection.find(qurey);
-      const myItems = await cursor.toArray();
 
-      res.send(myItems);
+      if (email === decodedEmail) {
+        const cursor = inventoryCoolection.find(qurey);
+        const myItems = await cursor.toArray();
+
+        res.send(myItems);
+      } else {
+        return res.status(403).send({ message: "Forbiden User" });
+      }
     });
 
     // POST New Item
@@ -131,7 +127,6 @@ const run = async () => {
     app.delete("/inventory-items/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: mongodb.ObjectId(id) };
-
       const result = await inventoryCoolection.deleteOne(query);
       res.send(result);
     });
@@ -145,6 +140,4 @@ const run = async () => {
 run().catch(console.dir);
 
 const port = process.env.PORT || 5000;
-app.listen(port, () =>
-  console.log("Hello there I am Listening on port:", port)
-);
+app.listen(port, () => console.log("Listening on port:", port));
