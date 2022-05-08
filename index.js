@@ -76,7 +76,7 @@ const run = async () => {
       const cursor = inventoryCoolection.find(qurey);
 
       const inventoryItems = await cursor.toArray();
-      if (inventoryItems.length > 0) {
+      if (inventoryItems) {
         res.send(inventoryItems);
       } else {
         return res
