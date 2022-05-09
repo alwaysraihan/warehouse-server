@@ -78,6 +78,14 @@ const run = async () => {
       res.send(inventoryItems);
     });
 
+    // Item Details Api
+    app.get("/inventory/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await inventoryCoolection.findOne(query);
+      res.send(result);
+    });
+
     // user items get api
     app.get("/my-items", verifyUser, async (req, res) => {
       const decodedEmail = req.decoded.email;
