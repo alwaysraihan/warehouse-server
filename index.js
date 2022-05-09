@@ -70,7 +70,7 @@ const run = async () => {
       res.send(inventoryItems);
     });
     app.get("/manage-inventory/", async (req, res) => {
-      const id = req.query._id;
+      const id = req.params.id;
       const qurey = { _id: mongodb.ObjectId(id) };
       const cursor = inventoryCoolection.find(qurey);
       const inventoryItems = await cursor.toArray();
