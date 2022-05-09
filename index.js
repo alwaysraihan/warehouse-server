@@ -70,20 +70,12 @@ const run = async () => {
       res.send(inventoryItems);
     });
     app.get("/manage-inventory/", async (req, res) => {
-      const id = req.params.id;
+      const id = req.query._id;
       const qurey = { _id: mongodb.ObjectId(id) };
       const cursor = inventoryCoolection.find(qurey);
       const inventoryItems = await cursor.toArray();
 
       res.send(inventoryItems);
-    });
-
-    // Item Details Api
-    app.get("/inventory/:id", async (req, res) => {
-      const id = req.params.id;
-      const query = { _id: mongodb.ObjectId(id) };
-      const result = await inventoryCoolection.findOne(query);
-      res.send(result);
     });
 
     // user items get api
@@ -148,4 +140,4 @@ const run = async () => {
 run().catch(console.dir);
 
 const port = process.env.PORT || 5000;
-app.listen(port, () => console.log(" I'm Listening on port:", port));
+app.listen(port, () => console.log("Listening on port:", port));
