@@ -81,7 +81,7 @@ const run = async () => {
     // Item Details Api
     app.get("/inventory/:id", async (req, res) => {
       const id = req.params.id;
-      const query = { _id: ObjectId(id) };
+      const query = { _id: mongodb.ObjectId(id) };
       const result = await inventoryCoolection.findOne(query);
       res.send(result);
     });
