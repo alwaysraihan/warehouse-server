@@ -67,7 +67,6 @@ const run = async () => {
             const qurey = {};
             const result = await inventoryCoolection.find(qurey).toArray();
 
-<<<<<<< HEAD
             res.send(result);
         });
         app.get("/manage-inventory/", async (req, res) => {
@@ -75,20 +74,10 @@ const run = async () => {
             const qurey = { _id: mongodb.ObjectId(id) };
             const cursor = inventoryCoolection.find(qurey);
             const inventoryItems = await cursor.toArray();
-=======
-      res.send(inventoryItems);
-    });
-    app.get("/manage-inventory/", async (req, res) => {
-      const id = req.query._id;
-      const qurey = { _id: mongodb.ObjectId(id) };
-      const cursor = inventoryCoolection.find(qurey);
-      const inventoryItems = await cursor.toArray();
->>>>>>> 26178dd365427c19546e494f886a6bc53e843eb6
 
             res.send(inventoryItems);
         });
 
-<<<<<<< HEAD
         // Item Details Api
         app.get("/inventory/:id", async (req, res) => {
             const id = req.params.id;
@@ -102,13 +91,6 @@ const run = async () => {
             const decodedEmail = req.decoded.email;
             const email = req.query.email;
             const qurey = { email: email };
-=======
-    // user items get api
-    app.get("/my-items", verifyUser, async (req, res) => {
-      const decodedEmail = req.decoded.email;
-      const email = req.query.email;
-      const qurey = { email: email };
->>>>>>> 26178dd365427c19546e494f886a6bc53e843eb6
 
             if (email === decodedEmail) {
                 const cursor = inventoryCoolection.find(qurey);
@@ -166,10 +148,4 @@ const run = async () => {
 run().catch(console.dir);
 
 const port = process.env.PORT || 5000;
-<<<<<<< HEAD
-app.listen(port, () =>
-    console.log("Hello  I am set and Listening form port:", port)
-);
-=======
-app.listen(port, () => console.log("Listening on port:", port));
->>>>>>> 26178dd365427c19546e494f886a6bc53e843eb6
+app.listen(port, () => console.log("I am Listening form port:", port));
